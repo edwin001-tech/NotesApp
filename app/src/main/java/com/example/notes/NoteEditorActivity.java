@@ -2,13 +2,16 @@ package com.example.notes;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class NoteEditorActivity extends AppCompatActivity {
     int noteId;
@@ -40,6 +43,11 @@ public class NoteEditorActivity extends AppCompatActivity {
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     MainActivity.notes.set(noteId,String.valueOf(s));
                     MainActivity.arrayAdapter.notifyDataSetChanged();
+
+                    SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("com.example.notes", Context.MODE_PRIVATE);
+                    //convert the array list into Hashset
+                    HashSet<String> hashSet = new HashSet<>(MainActivity.notes);
+                    sharedPreferences.edit().putStringSet("notes", hashSet).apply();
 
                 }
 
